@@ -400,7 +400,7 @@ function Chat() {
                                         <Box className="message-content">
 
                                             <Typography className="message-name">
-                                                AI Assistant
+                                            IA
                                             </Typography>
 
                                             <Paper
