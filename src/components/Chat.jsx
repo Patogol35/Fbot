@@ -8,6 +8,7 @@ import {
     IconButton,
     Avatar,
     Divider,
+    Chip,
     CircularProgress,
     Drawer,
     List,
@@ -25,17 +26,15 @@ import {
     AddRounded,
     MenuRounded,
     DeleteOutlineRounded,
+    CodeRounded,
+    LightbulbOutlined,
 } from "@mui/icons-material";
 
 import "./Chat.css";
 
 function Chat() {
-
     const theme = useTheme();
-
-    const isMobile = useMediaQuery(
-        theme.breakpoints.down("md")
-    );
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -45,18 +44,13 @@ function Chat() {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-
         messagesEndRef.current?.scrollIntoView({
-            behavior: "smooth"
+            behavior: "smooth",
         });
-
     }, [messages, loading]);
 
     const sendMessage = async (text = message) => {
-
-        if (!text.trim() || loading) {
-            return;
-        }
+        if (!text.trim() || loading) return;
 
         const userMessage = text.trim();
 
@@ -64,27 +58,24 @@ function Chat() {
             ...prev,
             {
                 role: "user",
-                content: userMessage
-            }
+                content: userMessage,
+            },
         ]);
 
         setMessage("");
         setLoading(true);
 
         try {
-
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/api/chat`,
                 {
                     method: "POST",
-
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
-
                     body: JSON.stringify({
-                        message: userMessage
-                    })
+                        message: userMessage,
+                    }),
                 }
             );
 
@@ -100,12 +91,10 @@ function Chat() {
                 ...prev,
                 {
                     role: "assistant",
-                    content: data.response
-                }
+                    content: data.response,
+                },
             ]);
-
         } catch (error) {
-
             console.error(error);
 
             setMessages((prev) => [
@@ -113,19 +102,15 @@ function Chat() {
                 {
                     role: "assistant",
                     content:
-                        "No pude conectarme con el servidor. Verifica que el backend esté ejecutándose."
-                }
+                        "No pude conectarme con el servidor. Verifica que el backend esté ejecutándose.",
+                },
             ]);
-
         } finally {
-
             setLoading(false);
-
         }
     };
 
     const handleKeyDown = (event) => {
-
         if (
             event.key === "Enter" &&
             !event.shiftKey
@@ -136,7 +121,6 @@ function Chat() {
     };
 
     const newChat = () => {
-
         setMessages([]);
         setMessage("");
 
@@ -145,6 +129,60 @@ function Chat() {
         }
     };
 
+    const suggestions = [
+        {
+            icon: <LightbulbOutlined />,
+            text: "Dame una idea de proyecto",
+        },
+        {
+            icon: <CodeRounded />,
+            text: "Explícame JavaScript",
+        },
+    ];
+
+    const Input = (
+        <Box className="input-area">
+            <Box className="input-wrapper">
+                <TextField
+                    fullWidth
+                    multiline
+                    maxRows={5}
+                    value={message}
+                    onChange={(event) =>
+                        setMessage(event.target.value)
+                    }
+                    onKeyDown={handleKeyDown}
+                    placeholder="Escribe un mensaje..."
+                    disabled={loading}
+                    variant="outlined"
+                    className="chat-input"
+                />
+
+                <IconButton
+                    onClick={() => sendMessage()}
+                    disabled={
+                        !message.trim() || loading
+                    }
+                    className="send-button"
+                >
+                    {loading ? (
+                        <CircularProgress
+                            size={20}
+                            color="inherit"
+                        />
+                    ) : (
+                        <SendRounded />
+                    )}
+                </IconButton>
+            </Box>
+
+            <Typography className="input-disclaimer">
+                La IA puede cometer errores. Verifica la
+                información importante.
+            </Typography>
+        </Box>
+    );
+
     return (
         <Box className="chat-page">
 
@@ -152,31 +190,20 @@ function Chat() {
 
             <Drawer
                 variant={
-                    isMobile
-                        ? "temporary"
-                        : "permanent"
+                    isMobile ? "temporary" : "permanent"
                 }
-                open={
-                    isMobile
-                        ? drawerOpen
-                        : true
-                }
-                onClose={() =>
-                    setDrawerOpen(false)
-                }
+                open={isMobile ? drawerOpen : true}
+                onClose={() => setDrawerOpen(false)}
                 className="chat-drawer"
             >
-
                 <Box className="sidebar">
 
                     <Box className="sidebar-logo">
-
                         <Avatar className="sidebar-avatar">
                             <SmartToyRounded />
                         </Avatar>
 
                         <Box>
-
                             <Typography
                                 fontWeight={700}
                                 fontSize={16}
@@ -190,9 +217,7 @@ function Chat() {
                             >
                                 Gemini AI
                             </Typography>
-
                         </Box>
-
                     </Box>
 
                     <button
@@ -203,41 +228,30 @@ function Chat() {
                         Nueva conversación
                     </button>
 
-                    <Typography
-                        className="sidebar-section-title"
-                    >
+                    <Typography className="sidebar-section-title">
                         ASISTENTE
                     </Typography>
 
                     <List>
-
                         <ListItemButton
                             selected
                             onClick={newChat}
                         >
-
                             <ListItemIcon>
                                 <SmartToyRounded />
                             </ListItemIcon>
 
-                            <ListItemText
-                                primary="Chat"
-                            />
-
+                            <ListItemText primary="Chat" />
                         </ListItemButton>
-
                     </List>
 
                     <Box className="sidebar-bottom">
-
                         <Divider />
 
                         <Box className="sidebar-status">
-
                             <span className="online-dot" />
 
                             <Box>
-
                                 <Typography
                                     fontSize={13}
                                     fontWeight={600}
@@ -251,18 +265,13 @@ function Chat() {
                                 >
                                     Gemini API
                                 </Typography>
-
                             </Box>
-
                         </Box>
-
                     </Box>
-
                 </Box>
-
             </Drawer>
 
-            {/* CONTENIDO PRINCIPAL */}
+            {/* MAIN */}
 
             <Box className="chat-main">
 
@@ -287,7 +296,6 @@ function Chat() {
                         </Avatar>
 
                         <Box>
-
                             <Typography
                                 fontWeight={700}
                                 fontSize={15}
@@ -296,7 +304,6 @@ function Chat() {
                             </Typography>
 
                             <Box className="online-status">
-
                                 <span className="online-dot" />
 
                                 <Typography
@@ -305,40 +312,30 @@ function Chat() {
                                 >
                                     En línea
                                 </Typography>
-
                             </Box>
-
                         </Box>
-
                     </Box>
 
-                    <Box sx={{ marginLeft: "auto" }}>
-
-                        <IconButton
-                            onClick={newChat}
-                            title="Nueva conversación"
-                        >
-                            <DeleteOutlineRounded />
-                        </IconButton>
-
-                    </Box>
-
+                    <IconButton
+                        onClick={newChat}
+                        title="Nueva conversación"
+                        sx={{ marginLeft: "auto" }}
+                    >
+                        <DeleteOutlineRounded />
+                    </IconButton>
                 </Box>
 
-                {/* MENSAJES */}
+                {/* CHAT */}
 
-                <Box className="messages-container">
+                {messages.length === 0 ? (
 
-                    {messages.length === 0 ? (
+                    <Box className="empty-chat">
 
                         <Fade in>
-
                             <Box className="welcome-container">
 
                                 <Box className="welcome-icon-container">
-
                                     <SmartToyRounded />
-
                                 </Box>
 
                                 <Typography
@@ -358,156 +355,114 @@ function Chat() {
                                     Pregúntame lo que quieras.
                                 </Typography>
 
-                            </Box>
+                                <Box className="suggestions">
+                                    {suggestions.map(
+                                        (suggestion, index) => (
+                                            <Chip
+                                                key={index}
+                                                icon={suggestion.icon}
+                                                label={suggestion.text}
+                                                onClick={() =>
+                                                    sendMessage(
+                                                        suggestion.text
+                                                    )
+                                                }
+                                                className="suggestion-chip"
+                                            />
+                                        )
+                                    )}
+                                </Box>
 
+                                {Input}
+
+                            </Box>
                         </Fade>
 
-                    ) : (
+                    </Box>
 
-                        <Box className="messages-list">
+                ) : (
 
-                            {messages.map(
-                                (msg, index) => (
+                    <>
+                        <Box className="messages-container">
 
-                                    <Box
-                                        key={index}
-                                        className={`message-row ${msg.role}`}
-                                    >
+                            <Box className="messages-list">
 
-                                        {msg.role ===
-                                            "assistant" && (
+                                {messages.map(
+                                    (msg, index) => (
+                                        <Box
+                                            key={index}
+                                            className={`message-row ${msg.role}`}
+                                        >
 
-                                            <Avatar className="message-avatar">
-                                                <SmartToyRounded />
-                                            </Avatar>
+                                            {msg.role ===
+                                                "assistant" && (
+                                                <Avatar className="message-avatar">
+                                                    <SmartToyRounded />
+                                                </Avatar>
+                                            )}
 
-                                        )}
+                                            <Box className="message-content">
+
+                                                <Typography className="message-name">
+                                                    {msg.role ===
+                                                    "user"
+                                                        ? "Tú"
+                                                        : "AI Assistant"}
+                                                </Typography>
+
+                                                <Paper
+                                                    elevation={0}
+                                                    className={`message-bubble ${msg.role}`}
+                                                >
+                                                    <Typography className="message-text">
+                                                        {msg.content}
+                                                    </Typography>
+                                                </Paper>
+
+                                            </Box>
+                                        </Box>
+                                    )
+                                )}
+
+                                {loading && (
+                                    <Box className="message-row assistant">
+
+                                        <Avatar className="message-avatar">
+                                            <SmartToyRounded />
+                                        </Avatar>
 
                                         <Box className="message-content">
 
-                                            <Typography
-                                                className="message-name"
-                                            >
-                                                {msg.role === "user"
-                                                    ? "Tú"
-                                                    : "AI Assistant"}
+                                            <Typography className="message-name">
+                                                AI Assistant
                                             </Typography>
 
                                             <Paper
                                                 elevation={0}
-                                                className={`message-bubble ${msg.role}`}
+                                                className="message-bubble assistant typing-bubble"
                                             >
-
-                                                <Typography
-                                                    className="message-text"
-                                                >
-                                                    {msg.content}
-                                                </Typography>
-
+                                                <Box className="typing">
+                                                    <span />
+                                                    <span />
+                                                    <span />
+                                                </Box>
                                             </Paper>
 
                                         </Box>
-
                                     </Box>
+                                )}
 
-                                )
-                            )}
+                                <div ref={messagesEndRef} />
 
-                            {loading && (
-
-                                <Box className="message-row assistant">
-
-                                    <Avatar className="message-avatar">
-                                        <SmartToyRounded />
-                                    </Avatar>
-
-                                    <Box className="message-content">
-
-                                        <Typography
-                                            className="message-name"
-                                        >
-                                            AI Assistant
-                                        </Typography>
-
-                                        <Paper
-                                            elevation={0}
-                                            className="message-bubble assistant typing-bubble"
-                                        >
-
-                                            <Box className="typing">
-                                                <span />
-                                                <span />
-                                                <span />
-                                            </Box>
-
-                                        </Paper>
-
-                                    </Box>
-
-                                </Box>
-
-                            )}
-
-                            <div ref={messagesEndRef} />
+                            </Box>
 
                         </Box>
 
-                    )}
-
-                </Box>
-
-                {/* INPUT */}
-
-                <Box className="input-area">
-
-                    <Box className="input-wrapper">
-
-                        <TextField
-                            fullWidth
-                            multiline
-                            maxRows={5}
-                            value={message}
-                            onChange={(event) =>
-                                setMessage(event.target.value)
-                            }
-                            onKeyDown={handleKeyDown}
-                            placeholder="Escribe un mensaje..."
-                            disabled={loading}
-                            variant="outlined"
-                            className="chat-input"
-                        />
-
-                        <IconButton
-                            onClick={() => sendMessage()}
-                            disabled={
-                                !message.trim() ||
-                                loading
-                            }
-                            className="send-button"
-                        >
-
-                            {loading ? (
-                                <CircularProgress
-                                    size={21}
-                                    color="inherit"
-                                />
-                            ) : (
-                                <SendRounded />
-                            )}
-
-                        </IconButton>
-
-                    </Box>
-
-                    <Typography className="input-disclaimer">
-                        La IA puede cometer errores. Verifica la
-                        información importante.
-                    </Typography>
-
-                </Box>
+                        {Input}
+                    </>
+                )}
 
             </Box>
-
         </Box>
     );
 }
