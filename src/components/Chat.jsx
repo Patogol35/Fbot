@@ -129,17 +129,6 @@ function Chat() {
         }
     };
 
-    const suggestions = [
-        {
-            icon: <LightbulbOutlined />,
-            text: "Dame una idea de proyecto",
-        },
-        {
-            icon: <CodeRounded />,
-            text: "Explícame JavaScript",
-        },
-    ];
-
     const Input = (
         <Box className="input-area">
             <Box className="input-wrapper">
