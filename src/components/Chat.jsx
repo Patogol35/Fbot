@@ -77,19 +77,19 @@ function Chat() {
         try {
 
             const response = await fetch(
-                "http://localhost:3001/api/chat",
-                {
-                    method: "POST",
+    `${import.meta.env.VITE_API_URL}/api/chat`,
+    {
+        method: "POST",
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                    body: JSON.stringify({
-                        message: userMessage
-                    })
-                }
-            );
+        body: JSON.stringify({
+            message: userMessage
+        })
+    }
+);
 
             const data = await response.json();
 
