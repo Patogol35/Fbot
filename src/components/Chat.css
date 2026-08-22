@@ -231,15 +231,12 @@
 /* WELCOME */
 
 .welcome-container {
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     text-align: center;
     max-width: 700px;
-    margin: -70px auto 0;
-    box-sizing: border-box;
+    margin: 35px auto 0;
 }
 
 .welcome-icon-container {
@@ -413,7 +410,7 @@
     }
 
     .welcome-container {
-        margin-top: -40px;
+        margin-top: 25px;
     }
 
     .welcome-title {
@@ -431,7 +428,7 @@
     }
 
     .welcome-container {
-        margin-top: -35px;
+        margin-top: 20px;
     }
 
     .welcome-title {
@@ -441,4 +438,4 @@
     .welcome-description {
         font-size: 13px !important;
     }
-        }
+    }
