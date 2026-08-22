@@ -70,16 +70,16 @@ function Chat() {
         */
 
         const previousHistory = messages
-            .filter(
-                (msg) =>
-                    msg.role === "user" ||
-                    msg.role === "assistant"
-            )
-            .slice(-20)
-            .map((msg) => ({
-                role: msg.role,
-                content: msg.content,
-            }));
+    .filter(
+        (msg) =>
+            msg.role === "user" ||
+            msg.role === "assistant"
+    )
+    .slice(-12)
+    .map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+    }));
 
         /*
         |--------------------------------------------------------------------------
@@ -229,7 +229,7 @@ function Chat() {
                     variant="outlined"
                     className="chat-input"
                     inputProps={{
-                        maxLength: 2000,
+                        maxLength: 1500,
                     }}
                 />
 
