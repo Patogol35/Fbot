@@ -8,7 +8,6 @@ import {
     IconButton,
     Avatar,
     Divider,
-    Chip,
     CircularProgress,
     Drawer,
     List,
@@ -26,10 +25,6 @@ import {
     AddRounded,
     MenuRounded,
     DeleteOutlineRounded,
-    AutoAwesomeRounded,
-    CodeRounded,
-    LightbulbOutlined,
-    CloseRounded,
 } from "@mui/icons-material";
 
 import "./Chat.css";
@@ -38,7 +33,9 @@ function Chat() {
 
     const theme = useTheme();
 
-    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+    const isMobile = useMediaQuery(
+        theme.breakpoints.down("md")
+    );
 
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -77,19 +74,19 @@ function Chat() {
         try {
 
             const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/chat`,
-    {
-        method: "POST",
+                `${import.meta.env.VITE_API_URL}/api/chat`,
+                {
+                    method: "POST",
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-        body: JSON.stringify({
-            message: userMessage
-        })
-    }
-);
+                    body: JSON.stringify({
+                        message: userMessage
+                    })
+                }
+            );
 
             const data = await response.json();
 
@@ -123,6 +120,7 @@ function Chat() {
         } finally {
 
             setLoading(false);
+
         }
     };
 
@@ -147,30 +145,25 @@ function Chat() {
         }
     };
 
-    const suggestions = [
-        {
-            icon: <LightbulbOutlined />,
-            text: "Dame una idea de proyecto"
-        },
-        {
-            icon: <CodeRounded />,
-            text: "Explícame JavaScript"
-        },
-        {
-            icon: <AutoAwesomeRounded />,
-            text: "¿Qué puedes hacer?"
-        }
-    ];
-
     return (
         <Box className="chat-page">
 
             {/* SIDEBAR */}
 
             <Drawer
-                variant={isMobile ? "temporary" : "permanent"}
-                open={isMobile ? drawerOpen : true}
-                onClose={() => setDrawerOpen(false)}
+                variant={
+                    isMobile
+                        ? "temporary"
+                        : "permanent"
+                }
+                open={
+                    isMobile
+                        ? drawerOpen
+                        : true
+                }
+                onClose={() =>
+                    setDrawerOpen(false)
+                }
                 className="chat-drawer"
             >
 
@@ -183,6 +176,7 @@ function Chat() {
                         </Avatar>
 
                         <Box>
+
                             <Typography
                                 fontWeight={700}
                                 fontSize={16}
@@ -196,6 +190,7 @@ function Chat() {
                             >
                                 Gemini AI
                             </Typography>
+
                         </Box>
 
                     </Box>
@@ -205,7 +200,6 @@ function Chat() {
                         onClick={newChat}
                     >
                         <AddRounded />
-
                         Nueva conversación
                     </button>
 
@@ -221,6 +215,7 @@ function Chat() {
                             selected
                             onClick={newChat}
                         >
+
                             <ListItemIcon>
                                 <SmartToyRounded />
                             </ListItemIcon>
@@ -228,6 +223,7 @@ function Chat() {
                             <ListItemText
                                 primary="Chat"
                             />
+
                         </ListItemButton>
 
                     </List>
@@ -241,6 +237,7 @@ function Chat() {
                             <span className="online-dot" />
 
                             <Box>
+
                                 <Typography
                                     fontSize={13}
                                     fontWeight={600}
@@ -254,6 +251,7 @@ function Chat() {
                                 >
                                     Gemini API
                                 </Typography>
+
                             </Box>
 
                         </Box>
@@ -360,28 +358,6 @@ function Chat() {
                                     Pregúntame lo que quieras.
                                 </Typography>
 
-                                <Box className="suggestions">
-
-                                    {suggestions.map(
-                                        (suggestion, index) => (
-
-                                            <Chip
-                                                key={index}
-                                                icon={suggestion.icon}
-                                                label={suggestion.text}
-                                                onClick={() =>
-                                                    sendMessage(
-                                                        suggestion.text
-                                                    )
-                                                }
-                                                className="suggestion-chip"
-                                            />
-
-                                        )
-                                    )}
-
-                                </Box>
-
                             </Box>
 
                         </Fade>
@@ -412,8 +388,7 @@ function Chat() {
                                             <Typography
                                                 className="message-name"
                                             >
-                                                {msg.role ===
-                                                "user"
+                                                {msg.role === "user"
                                                     ? "Tú"
                                                     : "AI Assistant"}
                                             </Typography>
@@ -422,11 +397,13 @@ function Chat() {
                                                 elevation={0}
                                                 className={`message-bubble ${msg.role}`}
                                             >
+
                                                 <Typography
                                                     className="message-text"
                                                 >
                                                     {msg.content}
                                                 </Typography>
+
                                             </Paper>
 
                                         </Box>
@@ -456,12 +433,11 @@ function Chat() {
                                             elevation={0}
                                             className="message-bubble assistant typing-bubble"
                                         >
+
                                             <Box className="typing">
-
                                                 <span />
                                                 <span />
                                                 <span />
-
                                             </Box>
 
                                         </Paper>
@@ -509,6 +485,7 @@ function Chat() {
                             }
                             className="send-button"
                         >
+
                             {loading ? (
                                 <CircularProgress
                                     size={21}
@@ -517,6 +494,7 @@ function Chat() {
                             ) : (
                                 <SendRounded />
                             )}
+
                         </IconButton>
 
                     </Box>
