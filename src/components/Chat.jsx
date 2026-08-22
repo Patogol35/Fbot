@@ -40,16 +40,52 @@ function Chat() {
 
     const messagesEndRef = useRef(null);
 
+    /*
+    |--------------------------------------------------------------------------
+    | AUTO SCROLL
+    |--------------------------------------------------------------------------
+    */
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({
             behavior: "smooth",
         });
     }, [messages, loading]);
 
+    /*
+    |--------------------------------------------------------------------------
+    | ENVIAR MENSAJE
+    |--------------------------------------------------------------------------
+    */
+
     const sendMessage = async (text = message) => {
         if (!text.trim() || loading) return;
 
         const userMessage = text.trim();
+
+        /*
+        |--------------------------------------------------------------------------
+        | HISTORIAL ANTERIOR
+        |--------------------------------------------------------------------------
+        */
+
+        const previousHistory = messages
+            .filter(
+                (msg) =>
+                    msg.role === "user" ||
+                    msg.role === "assistant"
+            )
+            .slice(-20)
+            .map((msg) => ({
+                role: msg.role,
+                content: msg.content,
+            }));
+
+        /*
+        |--------------------------------------------------------------------------
+        | MOSTRAR MENSAJE DEL USUARIO
+        |--------------------------------------------------------------------------
+        */
 
         setMessages((prev) => [
             ...prev,
@@ -67,45 +103,78 @@ function Chat() {
                 `${import.meta.env.VITE_API_URL}/api/chat`,
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json",
                     },
+
                     body: JSON.stringify({
                         message: userMessage,
+                        history: previousHistory,
                     }),
                 }
             );
 
-            const data = await response.json();
+            let data;
 
-            if (!response.ok) {
+            try {
+                data = await response.json();
+            } catch {
                 throw new Error(
-                    data.error || "Error del servidor"
+                    "El servidor devolvió una respuesta inválida."
                 );
             }
 
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: "assistant",
-                    content: data.response,
-                },
-            ]);
-        } catch (error) {
-            console.error(error);
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                        "Error del servidor."
+                );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | RESPUESTA DE SASHA
+            |--------------------------------------------------------------------------
+            */
 
             setMessages((prev) => [
                 ...prev,
                 {
                     role: "assistant",
                     content:
-                        "No pude conectarme con el servidor. Verifica que el backend esté ejecutándose.",
+                        data.response ||
+                        "No recibí una respuesta válida.",
                 },
             ]);
+
+        } catch (error) {
+
+            console.error(
+                "❌ Error enviando mensaje:",
+                error
+            );
+
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    content:
+                        error.message ||
+                        "No pude conectarme con Sasha. Verifica que el backend esté disponible.",
+                },
+            ]);
+
         } finally {
             setLoading(false);
         }
     };
+
+    /*
+    |--------------------------------------------------------------------------
+    | ENTER PARA ENVIAR
+    |--------------------------------------------------------------------------
+    */
 
     const handleKeyDown = (event) => {
         if (
@@ -113,11 +182,20 @@ function Chat() {
             !event.shiftKey
         ) {
             event.preventDefault();
+
             sendMessage();
         }
     };
 
+    /*
+    |--------------------------------------------------------------------------
+    | NUEVA CONVERSACIÓN
+    |--------------------------------------------------------------------------
+    */
+
     const newChat = () => {
+        if (loading) return;
+
         setMessages([]);
         setMessage("");
 
@@ -126,9 +204,17 @@ function Chat() {
         }
     };
 
+    /*
+    |--------------------------------------------------------------------------
+    | INPUT
+    |--------------------------------------------------------------------------
+    */
+
     const Input = (
         <Box className="input-area">
+
             <Box className="input-wrapper">
+
                 <TextField
                     fullWidth
                     multiline
@@ -142,12 +228,16 @@ function Chat() {
                     disabled={loading}
                     variant="outlined"
                     className="chat-input"
+                    inputProps={{
+                        maxLength: 2000,
+                    }}
                 />
 
                 <IconButton
                     onClick={() => sendMessage()}
                     disabled={
-                        !message.trim() || loading
+                        !message.trim() ||
+                        loading
                     }
                     className="send-button"
                 >
@@ -160,55 +250,84 @@ function Chat() {
                         <SendRounded />
                     )}
                 </IconButton>
+
             </Box>
 
             <Typography className="input-disclaimer">
-                La IA puede cometer errores. Verifica la
-                información importante.
+                Sasha utiliza inteligencia artificial.
+                Puede cometer errores; verifica la información importante.
             </Typography>
+
         </Box>
     );
+
+    /*
+    |--------------------------------------------------------------------------
+    | UI
+    |--------------------------------------------------------------------------
+    */
 
     return (
         <Box className="chat-page">
 
+            {/* SIDEBAR */}
+
             <Drawer
                 variant={
-                    isMobile ? "temporary" : "permanent"
+                    isMobile
+                        ? "temporary"
+                        : "permanent"
                 }
-                open={isMobile ? drawerOpen : true}
-                onClose={() => setDrawerOpen(false)}
+                open={
+                    isMobile
+                        ? drawerOpen
+                        : true
+                }
+                onClose={() =>
+                    setDrawerOpen(false)
+                }
                 className="chat-drawer"
             >
+
                 <Box className="sidebar">
 
+                    {/* LOGO */}
+
                     <Box className="sidebar-logo">
+
                         <Avatar className="sidebar-avatar">
                             <SmartToyRounded />
                         </Avatar>
 
                         <Box>
+
                             <Typography
                                 fontWeight={700}
                                 fontSize={16}
                             >
-                                AI Assistant
+                                Sasha AI
                             </Typography>
 
                             <Typography
                                 fontSize={12}
                                 color="text.secondary"
                             >
-                                Gemini AI
+                                Groq · GPT-OSS 20B
                             </Typography>
+
                         </Box>
+
                     </Box>
+
+                    {/* NUEVA CONVERSACIÓN */}
 
                     <button
                         className="new-chat-button"
                         onClick={newChat}
+                        disabled={loading}
                     >
                         <AddRounded />
+
                         Nueva conversación
                     </button>
 
@@ -217,25 +336,36 @@ function Chat() {
                     </Typography>
 
                     <List>
+
                         <ListItemButton
                             selected
                             onClick={newChat}
                         >
+
                             <ListItemIcon>
                                 <SmartToyRounded />
                             </ListItemIcon>
 
-                            <ListItemText primary="Chat" />
+                            <ListItemText
+                                primary="Sasha"
+                            />
+
                         </ListItemButton>
+
                     </List>
 
+                    {/* ESTADO */}
+
                     <Box className="sidebar-bottom">
+
                         <Divider />
 
                         <Box className="sidebar-status">
+
                             <span className="online-dot" />
 
                             <Box>
+
                                 <Typography
                                     fontSize={13}
                                     fontWeight={600}
@@ -247,16 +377,24 @@ function Chat() {
                                     fontSize={11}
                                     color="text.secondary"
                                 >
-                                    Gemini API
+                                    Groq API
                                 </Typography>
+
                             </Box>
+
                         </Box>
+
                     </Box>
 
                 </Box>
+
             </Drawer>
 
+            {/* CHAT */}
+
             <Box className="chat-main">
+
+                {/* TOPBAR */}
 
                 <Box className="chat-topbar">
 
@@ -277,14 +415,16 @@ function Chat() {
                         </Avatar>
 
                         <Box>
+
                             <Typography
                                 fontWeight={700}
                                 fontSize={15}
                             >
-                                IA
+                                Sasha
                             </Typography>
 
                             <Box className="online-status">
+
                                 <span className="online-dot" />
 
                                 <Typography
@@ -293,14 +433,19 @@ function Chat() {
                                 >
                                     En línea
                                 </Typography>
+
                             </Box>
+
                         </Box>
 
                     </Box>
 
+                    {/* NUEVA CONVERSACIÓN */}
+
                     <IconButton
                         onClick={newChat}
                         title="Nueva conversación"
+                        disabled={loading}
                         sx={{
                             marginLeft: "auto",
                         }}
@@ -310,11 +455,14 @@ function Chat() {
 
                 </Box>
 
+                {/* CONTENIDO */}
+
                 {messages.length === 0 ? (
 
                     <Box className="empty-chat">
 
                         <Fade in>
+
                             <Box className="welcome-container">
 
                                 <Box className="welcome-icon-container">
@@ -333,14 +481,15 @@ function Chat() {
                                     color="text.secondary"
                                     className="welcome-description"
                                 >
-                                    Soy un asistente impulsado por
-                                    inteligencia artificial.
-                                    Pregúntame lo que quieras.
+                                    Soy Sasha, el asistente de
+                                    inteligencia artificial del
+                                    portfolio de Jorge.
                                 </Typography>
 
                                 {Input}
 
                             </Box>
+
                         </Fade>
 
                     </Box>
@@ -348,14 +497,18 @@ function Chat() {
                 ) : (
 
                     <>
+
+                        {/* MENSAJES */}
+
                         <Box className="messages-container">
 
                             <Box className="messages-list">
 
                                 {messages.map(
                                     (msg, index) => (
+
                                         <Box
-                                            key={index}
+                                            key={`${msg.role}-${index}`}
                                             className={`message-row ${msg.role}`}
                                         >
 
@@ -369,28 +522,36 @@ function Chat() {
                                             <Box className="message-content">
 
                                                 <Typography className="message-name">
+
                                                     {msg.role ===
                                                     "user"
                                                         ? "Tú"
-                                                        : "AI Assistant"}
+                                                        : "Sasha"}
+
                                                 </Typography>
 
                                                 <Paper
                                                     elevation={0}
                                                     className={`message-bubble ${msg.role}`}
                                                 >
+
                                                     <Typography className="message-text">
                                                         {msg.content}
                                                     </Typography>
+
                                                 </Paper>
 
                                             </Box>
 
                                         </Box>
+
                                     )
                                 )}
 
+                                {/* TYPING */}
+
                                 {loading && (
+
                                     <Box className="message-row assistant">
 
                                         <Avatar className="message-avatar">
@@ -400,23 +561,28 @@ function Chat() {
                                         <Box className="message-content">
 
                                             <Typography className="message-name">
-                                            IA
+                                                Sasha
                                             </Typography>
 
                                             <Paper
                                                 elevation={0}
                                                 className="message-bubble assistant typing-bubble"
                                             >
+
                                                 <Box className="typing">
+
                                                     <span />
                                                     <span />
                                                     <span />
+
                                                 </Box>
+
                                             </Paper>
 
                                         </Box>
 
                                     </Box>
+
                                 )}
 
                                 <div ref={messagesEndRef} />
@@ -426,6 +592,7 @@ function Chat() {
                         </Box>
 
                         {Input}
+
                     </>
 
                 )}
