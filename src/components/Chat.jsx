@@ -301,7 +301,9 @@ function Chat() {
                     <IconButton
                         onClick={newChat}
                         title="Nueva conversación"
-                        sx={{ marginLeft: "auto" }}
+                        sx={{
+                            marginLeft: "auto",
+                        }}
                     >
                         <DeleteOutlineRounded />
                     </IconButton>
