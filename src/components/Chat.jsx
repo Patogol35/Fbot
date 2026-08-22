@@ -281,7 +281,7 @@ function Chat() {
                                 fontWeight={700}
                                 fontSize={15}
                             >
-                                AI Assistant
+                                IA
                             </Typography>
 
                             <Box className="online-status">
