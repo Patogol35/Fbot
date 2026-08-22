@@ -8,7 +8,6 @@ import {
     IconButton,
     Avatar,
     Divider,
-    Chip,
     CircularProgress,
     Drawer,
     List,
@@ -26,8 +25,6 @@ import {
     AddRounded,
     MenuRounded,
     DeleteOutlineRounded,
-    CodeRounded,
-    LightbulbOutlined,
 } from "@mui/icons-material";
 
 import "./Chat.css";
@@ -175,8 +172,6 @@ function Chat() {
     return (
         <Box className="chat-page">
 
-            {/* SIDEBAR */}
-
             <Drawer
                 variant={
                     isMobile ? "temporary" : "permanent"
@@ -257,14 +252,11 @@ function Chat() {
                             </Box>
                         </Box>
                     </Box>
+
                 </Box>
             </Drawer>
 
-            {/* MAIN */}
-
             <Box className="chat-main">
-
-                {/* HEADER */}
 
                 <Box className="chat-topbar">
 
@@ -303,6 +295,7 @@ function Chat() {
                                 </Typography>
                             </Box>
                         </Box>
+
                     </Box>
 
                     <IconButton
@@ -312,9 +305,8 @@ function Chat() {
                     >
                         <DeleteOutlineRounded />
                     </IconButton>
-                </Box>
 
-                {/* CHAT */}
+                </Box>
 
                 {messages.length === 0 ? (
 
@@ -343,24 +335,6 @@ function Chat() {
                                     inteligencia artificial.
                                     Pregúntame lo que quieras.
                                 </Typography>
-
-                                <Box className="suggestions">
-                                    {suggestions.map(
-                                        (suggestion, index) => (
-                                            <Chip
-                                                key={index}
-                                                icon={suggestion.icon}
-                                                label={suggestion.text}
-                                                onClick={() =>
-                                                    sendMessage(
-                                                        suggestion.text
-                                                    )
-                                                }
-                                                className="suggestion-chip"
-                                            />
-                                        )
-                                    )}
-                                </Box>
 
                                 {Input}
 
@@ -409,6 +383,7 @@ function Chat() {
                                                 </Paper>
 
                                             </Box>
+
                                         </Box>
                                     )
                                 )}
@@ -438,6 +413,7 @@ function Chat() {
                                             </Paper>
 
                                         </Box>
+
                                     </Box>
                                 )}
 
@@ -449,9 +425,11 @@ function Chat() {
 
                         {Input}
                     </>
+
                 )}
 
             </Box>
+
         </Box>
     );
 }
