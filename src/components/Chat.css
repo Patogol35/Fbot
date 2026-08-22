@@ -293,7 +293,8 @@ body,
 .send-button {
     position: absolute !important;
     right: 8px;
-    bottom: 9px;
+    bottom: 50%;
+    transform: translateY(50%);
     width: 40px;
     height: 40px;
     background: #2563eb !important;
@@ -304,7 +305,7 @@ body,
 
 .send-button:hover {
     background: #1d4ed8 !important;
-    transform: translateY(-1px);
+    transform: translateY(50%) translateY(-1px);
     box-shadow: 0 6px 14px rgba(37,99,235,.25);
 }
 
