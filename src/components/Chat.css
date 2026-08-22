@@ -6,6 +6,10 @@ body,
     margin: 0;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 .chat-page {
     width: 100%;
     height: 100vh;
@@ -18,9 +22,8 @@ body,
 
 .chat-drawer .MuiDrawer-paper {
     width: 250px;
-    box-sizing: border-box;
     border-right: 1px solid #e5e7eb;
-    background: #ffffff;
+    background: #fff;
 }
 
 .sidebar {
@@ -29,7 +32,6 @@ body,
     display: flex;
     flex-direction: column;
     padding: 18px 14px;
-    box-sizing: border-box;
 }
 
 .sidebar-logo {
@@ -64,7 +66,6 @@ body,
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: .2s;
 }
 
 .new-chat-button:hover {
@@ -91,7 +92,8 @@ body,
     color: #2563eb;
 }
 
-.sidebar .MuiListItemButton-root.Mui-selected .MuiListItemIcon-root {
+.sidebar .MuiListItemButton-root.Mui-selected
+.MuiListItemIcon-root {
     color: #2563eb;
 }
 
@@ -129,7 +131,7 @@ body,
     flex-direction: column;
 }
 
-/* TOPBAR */
+/* HEADER */
 
 .chat-topbar {
     height: 64px;
@@ -138,7 +140,7 @@ body,
     align-items: center;
     padding: 0 24px;
     border-bottom: 1px solid #e5e7eb;
-    background: rgba(255,255,255,.9);
+    background: rgba(255,255,255,.92);
     backdrop-filter: blur(12px);
 }
 
@@ -159,7 +161,132 @@ body,
     gap: 5px;
 }
 
-/* MESSAGE AREA */
+/* EMPTY SCREEN */
+
+.empty-chat {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 30px 20px;
+}
+
+.welcome-container {
+    width: min(720px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform: translateY(-5%);
+}
+
+.welcome-icon-container {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    background: #2563eb;
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(37,99,235,.18);
+}
+
+.welcome-icon-container svg {
+    font-size: 32px;
+}
+
+.welcome-title {
+    margin-bottom: 8px !important;
+    color: #111827;
+}
+
+.welcome-description {
+    max-width: 480px;
+    line-height: 1.6 !important;
+}
+
+/* SUGGESTIONS */
+
+.suggestions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+/* INPUT */
+
+.input-area {
+    width: 100%;
+    padding: 16px 0 0;
+}
+
+.empty-chat .input-area {
+    margin-top: 22px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: min(720px, 100%);
+    margin: auto;
+}
+
+.chat-input .MuiOutlinedInput-root {
+    min-height: 54px;
+    padding-right: 55px;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(0,0,0,.06);
+}
+
+.chat-input .MuiOutlinedInput-root fieldset {
+    border-color: #dfe3e8;
+}
+
+.chat-input .MuiOutlinedInput-root:hover fieldset {
+    border-color: #cbd5e1;
+}
+
+.chat-input .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #2563eb;
+}
+
+.chat-input textarea {
+    padding: 13px 0;
+    font-size: 14px;
+}
+
+.send-button {
+    position: absolute !important;
+    right: 8px;
+    bottom: 8px;
+    width: 38px;
+    height: 38px;
+    background: #2563eb !important;
+    color: #fff !important;
+}
+
+.send-button:hover {
+    background: #1d4ed8 !important;
+}
+
+.send-button.Mui-disabled {
+    background: #d1d5db !important;
+}
+
+.input-disclaimer {
+    margin-top: 5px !important;
+    text-align: center;
+    font-size: 10px !important;
+    color: #9ca3af;
+}
+
+/* MESSAGES */
 
 .messages-container {
     flex: 1;
@@ -214,14 +341,14 @@ body,
 }
 
 .message-bubble.assistant {
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e5e7eb;
     border-top-left-radius: 5px !important;
 }
 
 .message-bubble.user {
-    color: white;
     background: #2563eb;
+    color: #fff;
     border-top-right-radius: 5px !important;
 }
 
@@ -229,74 +356,6 @@ body,
     white-space: pre-wrap;
     font-size: 14px !important;
     line-height: 1.6 !important;
-}
-
-/* EMPTY CHAT */
-
-.welcome-container {
-    width: min(720px, 100%);
-    margin: 0 auto;
-    padding: 8vh 20px 20px;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.welcome-icon-container {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 18px;
-    background: #2563eb;
-    color: white;
-    box-shadow: 0 8px 25px rgba(37,99,235,.18);
-}
-
-.welcome-icon-container svg {
-    font-size: 32px;
-}
-
-.welcome-title {
-    margin-bottom: 8px !important;
-    color: #111827;
-    letter-spacing: -.5px;
-}
-
-.welcome-description {
-    max-width: 480px;
-    margin: auto !important;
-    color: #6b7280;
-    line-height: 1.6 !important;
-}
-
-/* SUGGESTIONS */
-
-.suggestions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 22px;
-}
-
-.suggestion-chip {
-    height: 38px !important;
-    background: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
-    color: #374151 !important;
-    transition: .2s !important;
-}
-
-.suggestion-chip:hover {
-    border-color: #93c5fd !important;
-    background: #eff6ff !important;
-    color: #1d4ed8 !important;
-}
-
-.suggestion-chip .MuiChip-icon {
-    color: #2563eb;
 }
 
 /* TYPING */
@@ -339,86 +398,23 @@ body,
     }
 }
 
-/* INPUT */
+/* CHIPS */
 
-.input-area {
-    width: 100%;
-    flex-shrink: 0;
-    padding: 8px 24px 12px;
-    box-sizing: border-box;
-    background: #f8fafc;
+.suggestion-chip {
+    height: 38px !important;
+    background: #fff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #374151 !important;
 }
 
-.input-wrapper {
-    position: relative;
-    width: min(820px, 100%);
-    margin: auto;
+.suggestion-chip:hover {
+    background: #eff6ff !important;
+    border-color: #93c5fd !important;
+    color: #1d4ed8 !important;
 }
 
-.chat-input .MuiOutlinedInput-root {
-    min-height: 52px;
-    padding-right: 55px;
-    border-radius: 16px;
-    background: white;
-    box-shadow: 0 3px 15px rgba(0,0,0,.05);
-}
-
-.chat-input .MuiOutlinedInput-root fieldset {
-    border-color: #dfe3e8;
-}
-
-.chat-input .MuiOutlinedInput-root:hover fieldset {
-    border-color: #cbd5e1;
-}
-
-.chat-input .MuiOutlinedInput-root.Mui-focused fieldset {
-    border-color: #2563eb;
-}
-
-.chat-input textarea {
-    padding: 13px 0;
-    font-size: 14px;
-}
-
-.send-button {
-    position: absolute !important;
-    right: 7px;
-    bottom: 7px;
-    width: 38px;
-    height: 38px;
-    background: #2563eb !important;
-    color: white !important;
-    transition: .2s !important;
-}
-
-.send-button:hover {
-    background: #1d4ed8 !important;
-    transform: scale(1.04);
-}
-
-.send-button.Mui-disabled {
-    background: #d1d5db !important;
-}
-
-.input-disclaimer {
-    margin-top: 5px !important;
-    text-align: center;
-    font-size: 10px !important;
-    color: #9ca3af;
-}
-
-/* ANIMATION */
-
-@keyframes messageIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.suggestion-chip .MuiChip-icon {
+    color: #2563eb;
 }
 
 /* MOBILE */
@@ -433,44 +429,35 @@ body,
         padding: 0 14px;
     }
 
-    .messages-container {
-        padding: 18px 12px;
-    }
-
-    .message-content {
-        max-width: 86%;
+    .empty-chat {
+        padding: 20px 12px;
     }
 
     .welcome-container {
-        padding-top: 6vh;
+        transform: translateY(-3%);
     }
 
     .welcome-title {
         font-size: 28px !important;
     }
 
+    .messages-container {
+        padding: 18px 12px;
+    }
+
     .input-area {
-        padding: 7px 10px 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .message-content {
+        max-width: 86%;
     }
 }
 
 @media (max-width: 500px) {
-    .message-content {
-        max-width: 90%;
-    }
-
     .welcome-container {
-        padding: 4vh 10px 15px;
-    }
-
-    .welcome-icon-container {
-        width: 58px;
-        height: 58px;
-        margin-bottom: 14px;
-    }
-
-    .welcome-icon-container svg {
-        font-size: 29px;
+        transform: none;
     }
 
     .welcome-title {
@@ -481,13 +468,22 @@ body,
         font-size: 13px !important;
     }
 
+    .welcome-icon-container {
+        width: 58px;
+        height: 58px;
+    }
+
     .suggestions {
+        width: 100%;
         flex-direction: column;
-        align-items: stretch;
         padding: 0 15px;
     }
 
     .suggestion-chip {
         width: 100%;
     }
-}
+
+    .message-content {
+        max-width: 90%;
+    }
+    }
