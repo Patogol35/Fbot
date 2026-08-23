@@ -305,7 +305,7 @@ function Chat() {
                                 fontWeight={700}
                                 fontSize={16}
                             >
-                                Sasha AI
+                                Sasha IA
                             </Typography>
 
                             <Typography
