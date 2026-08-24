@@ -11,13 +11,7 @@ import {
     TextField,
     IconButton,
     Avatar,
-    Divider,
     CircularProgress,
-    Drawer,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
     useMediaQuery,
     useTheme,
     Fade,
@@ -26,8 +20,6 @@ import {
 import {
     SendRounded,
     SmartToyRounded,
-    AddRounded,
-    MenuRounded,
     DeleteOutlineRounded,
     LightModeRounded,
     DarkModeRounded,
@@ -39,7 +31,6 @@ function Chat({
     darkMode,
     toggleDarkMode,
 }) {
-
     const theme = useTheme();
 
     const isMobile = useMediaQuery(
@@ -49,7 +40,6 @@ function Chat({
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const messagesEndRef = useRef(null);
 
@@ -60,11 +50,9 @@ function Chat({
     */
 
     useEffect(() => {
-
         messagesEndRef.current?.scrollIntoView({
             behavior: "smooth",
         });
-
     }, [messages, loading]);
 
     /*
@@ -73,13 +61,8 @@ function Chat({
     |--------------------------------------------------------------------------
     */
 
-    const sendMessage = async (
-        text = message
-    ) => {
-
-        if (!text.trim() || loading) {
-            return;
-        }
+    const sendMessage = async (text = message) => {
+        if (!text.trim() || loading) return;
 
         const userMessage = text.trim();
 
@@ -119,7 +102,6 @@ function Chat({
         setLoading(true);
 
         try {
-
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/api/chat`,
                 {
@@ -139,24 +121,18 @@ function Chat({
             let data;
 
             try {
-
                 data = await response.json();
-
             } catch {
-
                 throw new Error(
                     "El servidor devolvió una respuesta inválida."
                 );
-
             }
 
             if (!response.ok) {
-
                 throw new Error(
                     data.error ||
                     "Error del servidor."
                 );
-
             }
 
             /*
@@ -176,7 +152,6 @@ function Chat({
             ]);
 
         } catch (error) {
-
             console.error(
                 "❌ Error enviando mensaje:",
                 error
@@ -193,11 +168,8 @@ function Chat({
             ]);
 
         } finally {
-
             setLoading(false);
-
         }
-
     };
 
     /*
@@ -207,18 +179,14 @@ function Chat({
     */
 
     const handleKeyDown = (event) => {
-
         if (
             event.key === "Enter" &&
             !event.shiftKey
         ) {
-
             event.preventDefault();
 
             sendMessage();
-
         }
-
     };
 
     /*
@@ -228,18 +196,10 @@ function Chat({
     */
 
     const newChat = () => {
-
-        if (loading) {
-            return;
-        }
+        if (loading) return;
 
         setMessages([]);
         setMessage("");
-
-        if (isMobile) {
-            setDrawerOpen(false);
-        }
-
     };
 
     /*
@@ -249,7 +209,6 @@ function Chat({
     */
 
     const Input = (
-
         <Box className="input-area">
 
             <Box className="input-wrapper">
@@ -260,9 +219,7 @@ function Chat({
                     maxRows={5}
                     value={message}
                     onChange={(event) =>
-                        setMessage(
-                            event.target.value
-                        )
+                        setMessage(event.target.value)
                     }
                     onKeyDown={handleKeyDown}
                     placeholder="Escribe un mensaje..."
@@ -275,42 +232,31 @@ function Chat({
                 />
 
                 <IconButton
-                    onClick={() =>
-                        sendMessage()
-                    }
+                    onClick={() => sendMessage()}
                     disabled={
                         !message.trim() ||
                         loading
                     }
                     className="send-button"
                 >
-
                     {loading ? (
-
                         <CircularProgress
                             size={20}
                             color="inherit"
                         />
-
                     ) : (
-
                         <SendRounded />
-
                     )}
-
                 </IconButton>
 
             </Box>
 
             <Typography className="input-disclaimer">
-
                 Sasha utiliza inteligencia artificial.
                 Puede cometer errores; verifica la información importante.
-
             </Typography>
 
         </Box>
-
     );
 
     /*
@@ -320,136 +266,7 @@ function Chat({
     */
 
     return (
-
         <Box className="chat-page">
-
-            {/* SIDEBAR */}
-
-            <Drawer
-                variant={
-                    isMobile
-                        ? "temporary"
-                        : "permanent"
-                }
-                open={
-                    isMobile
-                        ? drawerOpen
-                        : true
-                }
-                onClose={() =>
-                    setDrawerOpen(false)
-                }
-                className="chat-drawer"
-            >
-
-                <Box className="sidebar">
-
-                    {/* LOGO */}
-
-                    <Box className="sidebar-logo">
-
-                        <Avatar className="sidebar-avatar">
-
-                            <SmartToyRounded />
-
-                        </Avatar>
-
-                        <Box>
-
-                            <Typography
-                                fontWeight={700}
-                                fontSize={16}
-                            >
-                                Sasha IA
-                            </Typography>
-
-                            <Typography
-                                fontSize={12}
-                                color="text.secondary"
-                            >
-                                Groq · GPT-OSS 20B
-                            </Typography>
-
-                        </Box>
-
-                    </Box>
-
-                    {/* NUEVA CONVERSACIÓN */}
-
-                    <button
-                        className="new-chat-button"
-                        onClick={newChat}
-                        disabled={loading}
-                    >
-
-                        <AddRounded />
-
-                        Nueva conversación
-
-                    </button>
-
-                    <Typography className="sidebar-section-title">
-
-                        ASISTENTE
-
-                    </Typography>
-
-                    <List>
-
-                        <ListItemButton
-                            selected
-                            onClick={newChat}
-                        >
-
-                            <ListItemIcon>
-
-                                <SmartToyRounded />
-
-                            </ListItemIcon>
-
-                            <ListItemText
-                                primary="Sasha"
-                            />
-
-                        </ListItemButton>
-
-                    </List>
-
-                    {/* ESTADO */}
-
-                    <Box className="sidebar-bottom">
-
-                        <Divider />
-
-                        <Box className="sidebar-status">
-
-                            <span className="online-dot" />
-
-                            <Box>
-
-                                <Typography
-                                    fontSize={13}
-                                    fontWeight={600}
-                                >
-                                    IA conectada
-                                </Typography>
-
-                                <Typography
-                                    fontSize={11}
-                                    color="text.secondary"
-                                >
-                                    Groq API
-                                </Typography>
-
-                            </Box>
-
-                        </Box>
-
-                    </Box>
-
-                </Box>
-
-            </Drawer>
 
             {/* CHAT */}
 
@@ -459,26 +276,10 @@ function Chat({
 
                 <Box className="chat-topbar">
 
-                    {isMobile && (
-
-                        <IconButton
-                            onClick={() =>
-                                setDrawerOpen(true)
-                            }
-                        >
-
-                            <MenuRounded />
-
-                        </IconButton>
-
-                    )}
-
                     <Box className="topbar-info">
 
                         <Avatar className="topbar-avatar">
-
                             <SmartToyRounded />
-
                         </Avatar>
 
                         <Box>
@@ -507,7 +308,7 @@ function Chat({
 
                     </Box>
 
-                    {/* BOTÓN MODO CLARO / OSCURO */}
+                    {/* MODO CLARO / OSCURO */}
 
                     <IconButton
                         onClick={toggleDarkMode}
@@ -518,17 +319,11 @@ function Chat({
                         }
                         className="theme-button"
                     >
-
                         {darkMode ? (
-
                             <LightModeRounded />
-
                         ) : (
-
                             <DarkModeRounded />
-
                         )}
-
                     </IconButton>
 
                     {/* NUEVA CONVERSACIÓN */}
@@ -539,9 +334,7 @@ function Chat({
                         disabled={loading}
                         className="new-chat-icon-button"
                     >
-
                         <DeleteOutlineRounded />
-
                     </IconButton>
 
                 </Box>
@@ -557,9 +350,7 @@ function Chat({
                             <Box className="welcome-container">
 
                                 <Box className="welcome-icon-container">
-
                                     <SmartToyRounded />
-
                                 </Box>
 
                                 <Typography
@@ -609,9 +400,7 @@ function Chat({
                                                 "assistant" && (
 
                                                 <Avatar className="message-avatar">
-
                                                     <SmartToyRounded />
-
                                                 </Avatar>
 
                                             )}
@@ -633,9 +422,7 @@ function Chat({
                                                 >
 
                                                     <Typography className="message-text">
-
                                                         {msg.content}
-
                                                     </Typography>
 
                                                 </Paper>
@@ -654,17 +441,13 @@ function Chat({
                                     <Box className="message-row assistant">
 
                                         <Avatar className="message-avatar">
-
                                             <SmartToyRounded />
-
                                         </Avatar>
 
                                         <Box className="message-content">
 
                                             <Typography className="message-name">
-
                                                 Sasha
-
                                             </Typography>
 
                                             <Paper
@@ -703,9 +486,7 @@ function Chat({
             </Box>
 
         </Box>
-
     );
-
 }
 
 export default Chat;
