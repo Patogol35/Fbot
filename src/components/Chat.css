@@ -53,6 +53,11 @@
     width: 36px !important;
     height: 36px !important;
     background: #2563eb !important;
+    color: #fff !important;
+}
+
+.topbar-avatar svg {
+    color: #fff !important;
 }
 
 .theme-button {
@@ -243,6 +248,11 @@
     height: 32px !important;
     flex-shrink: 0;
     background: #2563eb !important;
+    color: #fff !important;
+}
+
+.message-avatar svg {
+    color: #fff !important;
 }
 
 .message-bubble {
