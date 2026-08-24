@@ -239,7 +239,7 @@
 .message-name {
     padding: 0 5px;
     color: var(--mui-palette-text-secondary);
-    font-size: 18px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
 }
 
