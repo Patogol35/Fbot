@@ -66,6 +66,11 @@ function Chat({
     label: "Certificados de Jorge",
     message: "¿Qué certificaciones tiene Jorge?",
 },
+
+        {
+    label: "Tecnologías de Jorge",
+    message: "¿Qué tecnologías utiliza Jorge?",
+},
     ];
 
     /*
