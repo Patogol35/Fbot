@@ -14,6 +14,7 @@ import {
     CircularProgress,
     useMediaQuery,
     useTheme,
+    Fade,
 } from "@mui/material";
 
 import {
@@ -41,6 +42,31 @@ function Chat({
     const [loading, setLoading] = useState(false);
 
     const messagesEndRef = useRef(null);
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUGERENCIAS
+    |--------------------------------------------------------------------------
+    */
+
+    const suggestions = [
+        {
+            label: "¿Quién es Jorge?",
+            message: "¿Quién es Jorge?",
+        },
+        {
+            label: "Educación de Jorge",
+            message: "¿Cuál es la educación de Jorge?",
+        },
+        {
+            label: "Proyectos de Jorge",
+            message: "¿Qué proyectos tiene Jorge?",
+        },
+        {
+            label: "Experiencia de Jorge",
+            message: "¿Cuál es la experiencia de Jorge?",
+        },
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -203,31 +229,6 @@ function Chat({
 
     /*
     |--------------------------------------------------------------------------
-    | SUGERENCIAS
-    |--------------------------------------------------------------------------
-    */
-
-    const suggestions = [
-        {
-            label: "¿Quién es Jorge?",
-            message: "¿Quién es Jorge?",
-        },
-        {
-            label: "Educación de Jorge",
-            message: "¿Cuál es la educación de Jorge?",
-        },
-        {
-            label: "Proyectos de Jorge",
-            message: "¿Qué proyectos tiene Jorge?",
-        },
-        {
-            label: "Experiencia de Jorge",
-            message: "¿Cuál es la experiencia de Jorge?",
-        },
-    ];
-
-    /*
-    |--------------------------------------------------------------------------
     | INPUT
     |--------------------------------------------------------------------------
     */
@@ -285,6 +286,37 @@ function Chat({
 
     /*
     |--------------------------------------------------------------------------
+    | SUGERENCIAS
+    |--------------------------------------------------------------------------
+    */
+
+    const Suggestions = (
+        <Box className="suggestions-container">
+
+            {suggestions.map(
+                (suggestion, index) => (
+
+                    <button
+                        key={index}
+                        className="suggestion-button"
+                        onClick={() =>
+                            sendMessage(
+                                suggestion.message
+                            )
+                        }
+                        disabled={loading}
+                    >
+                        {suggestion.label}
+                    </button>
+
+                )
+            )}
+
+        </Box>
+    );
+
+    /*
+    |--------------------------------------------------------------------------
     | UI
     |--------------------------------------------------------------------------
     */
@@ -292,9 +324,11 @@ function Chat({
     return (
         <Box className="chat-page">
 
+            {/* CHAT PRINCIPAL */}
+
             <Box className="chat-main">
 
-                {/* TOPBAR */}
+                {/* TOPBAR - SIEMPRE VISIBLE */}
 
                 <Box className="chat-topbar">
 
@@ -361,48 +395,68 @@ function Chat({
 
                 </Box>
 
-                {/* CONTENIDO */}
+                {/* CONTENIDO DEL CHAT */}
 
                 <Box className="chat-content">
 
-                    {/* BIENVENIDA */}
+                    {/* -------------------------------------------------
+                        BIENVENIDA
+                    ------------------------------------------------- */}
 
                     {messages.length === 0 && (
 
-                        <Box className="welcome-container">
+                        <Box className="empty-chat">
 
-                            <Box className="welcome-icon-container">
-                                <SmartToyRounded />
-                            </Box>
+                            <Fade in>
 
-                            <Typography
-                                variant="h4"
-                                fontWeight={800}
-                                className="welcome-title"
-                            >
-                                ¿En qué puedo ayudarte?
-                            </Typography>
+                                <Box className="welcome-container">
 
-                            <Typography
-                                color="text.secondary"
-                                className="welcome-description"
-                            >
-                                Soy Sasha, el asistente de
-                                inteligencia artificial del
-                                portfolio de Jorge.
-                            </Typography>
+                                    <Box className="welcome-icon-container">
+                                        <SmartToyRounded />
+                                    </Box>
+
+                                    <Typography
+                                        variant="h4"
+                                        fontWeight={800}
+                                        className="welcome-title"
+                                    >
+                                        ¿En qué puedo ayudarte?
+                                    </Typography>
+
+                                    <Typography
+                                        color="text.secondary"
+                                        className="welcome-description"
+                                    >
+                                        Soy Sasha, el asistente de
+                                        inteligencia artificial del
+                                        portfolio de Jorge.
+                                    </Typography>
+
+                                    {/* SUGERENCIAS */}
+
+                                    {Suggestions}
+
+                                </Box>
+
+                            </Fade>
 
                         </Box>
 
                     )}
 
-                    {/* MENSAJES */}
+                    {/* -------------------------------------------------
+                        MENSAJES
+                    ------------------------------------------------- */}
 
-                    <Box className="messages-container">
+                    {messages.length > 0 && (
 
-                        {messages.length > 0 && (
+                        <Box className="messages-container">
 
                             <Box className="messages-list">
+
+                                {/* SUGERENCIAS ARRIBA DEL CHAT */}
+
+                                {Suggestions}
 
                                 {messages.map(
                                     (msg, index) => (
@@ -424,10 +478,12 @@ function Chat({
                                             <Box className="message-content">
 
                                                 <Typography className="message-name">
+
                                                     {msg.role ===
                                                     "user"
                                                         ? "Tú"
                                                         : "Sasha"}
+
                                                 </Typography>
 
                                                 <Paper
@@ -489,36 +545,11 @@ function Chat({
 
                             </Box>
 
-                        )}
+                        </Box>
 
-                    </Box>
+                    )}
 
-                    {/* SUGERENCIAS */}
-
-                    <Box className="suggestions-container">
-
-                        {suggestions.map(
-                            (suggestion, index) => (
-
-                                <button
-                                    key={index}
-                                    className="suggestion-button"
-                                    onClick={() =>
-                                        sendMessage(
-                                            suggestion.message
-                                        )
-                                    }
-                                    disabled={loading}
-                                >
-                                    {suggestion.label}
-                                </button>
-
-                            )
-                        )}
-
-                    </Box>
-
-                    {/* INPUT */}
+                    {/* INPUT SIEMPRE ABAJO */}
 
                     {Input}
 
@@ -530,4 +561,4 @@ function Chat({
     );
 }
 
-export default Chat; 
+export default Chat;
