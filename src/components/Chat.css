@@ -404,4 +404,28 @@
     .message-content {
         max-width: 90%;
     }
+    .suggestions-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 700px;
+}
+
+.suggestion-button {
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    background: transparent;
+    color: inherit;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.suggestion-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(128, 128, 128, 0.6);
+}
 }
