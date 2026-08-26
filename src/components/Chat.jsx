@@ -14,7 +14,6 @@ import {
     CircularProgress,
     useMediaQuery,
     useTheme,
-    Fade,
 } from "@mui/material";
 
 import {
@@ -204,6 +203,31 @@ function Chat({
 
     /*
     |--------------------------------------------------------------------------
+    | SUGERENCIAS
+    |--------------------------------------------------------------------------
+    */
+
+    const suggestions = [
+        {
+            label: "¿Quién es Jorge?",
+            message: "¿Quién es Jorge?",
+        },
+        {
+            label: "Educación de Jorge",
+            message: "¿Cuál es la educación de Jorge?",
+        },
+        {
+            label: "Proyectos de Jorge",
+            message: "¿Qué proyectos tiene Jorge?",
+        },
+        {
+            label: "Experiencia de Jorge",
+            message: "¿Cuál es la experiencia de Jorge?",
+        },
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
     | INPUT
     |--------------------------------------------------------------------------
     */
@@ -267,8 +291,6 @@ function Chat({
 
     return (
         <Box className="chat-page">
-
-            {/* CHAT */}
 
             <Box className="chat-main">
 
@@ -339,82 +361,44 @@ function Chat({
 
                 </Box>
 
-                {/* CONTENIDO */}
+                {/* CONTENIDO ÚNICO */}
 
-                {messages.length === 0 ? (
+                <Box className="chat-content">
 
-                    <Box className="empty-chat">
+                    {/* BIENVENIDA */}
 
-                        <Fade in>
+                    {messages.length === 0 && (
 
-                            <Box className="welcome-container">
+                        <Box className="welcome-container">
 
-                                <Box className="welcome-icon-container">
-                                    <SmartToyRounded />
-                                </Box>
-
-                                <Typography
-                                    variant="h4"
-                                    fontWeight={800}
-                                    className="welcome-title"
-                                >
-                                    ¿En qué puedo ayudarte?
-                                </Typography>
-
-                                <Typography
-                                    color="text.secondary"
-                                    className="welcome-description"
-                                >
-                                    Soy Sasha, el asistente de
-                                    inteligencia artificial del
-                                    portfolio de Jorge.
-                                </Typography>
-
-                                <Box className="suggestions-container">
-
-    <button
-        className="suggestion-button"
-        onClick={() => sendMessage("¿Quién es Jorge?")}
-    >
-        ¿Quién es Jorge?
-    </button>
-
-    <button
-        className="suggestion-button"
-        onClick={() => sendMessage("¿Cuál es la educación de Jorge?")}
-    >
-        Educación de Jorge
-    </button>
-
-    <button
-        className="suggestion-button"
-        onClick={() => sendMessage("¿Qué proyectos tiene Jorge?")}
-    >
-        Proyectos de Jorge
-    </button>
-
-    <button
-        className="suggestion-button"
-        onClick={() => sendMessage("¿Cuál es la experiencia de Jorge?")}
-    >
-        Experiencia de Jorge
-    </button>
-
-</Box>
-
-                                {Input}
-
+                            <Box className="welcome-icon-container">
+                                <SmartToyRounded />
                             </Box>
 
-                        </Fade>
+                            <Typography
+                                variant="h4"
+                                fontWeight={800}
+                                className="welcome-title"
+                            >
+                                ¿En qué puedo ayudarte?
+                            </Typography>
 
-                    </Box>
+                            <Typography
+                                color="text.secondary"
+                                className="welcome-description"
+                            >
+                                Soy Sasha, el asistente de
+                                inteligencia artificial del
+                                portfolio de Jorge.
+                            </Typography>
 
-                ) : (
+                        </Box>
 
-                    <>
+                    )}
 
-                        {/* MENSAJES */}
+                    {/* MENSAJES */}
+
+                    {messages.length > 0 && (
 
                         <Box className="messages-container">
 
@@ -509,11 +493,38 @@ function Chat({
 
                         </Box>
 
-                        {Input}
+                    )}
 
-                    </>
+                    {/* SUGERENCIAS SIEMPRE VISIBLES */}
 
-                )}
+                    <Box className="suggestions-container">
+
+                        {suggestions.map(
+                            (suggestion, index) => (
+
+                                <button
+                                    key={index}
+                                    className="suggestion-button"
+                                    onClick={() =>
+                                        sendMessage(
+                                            suggestion.message
+                                        )
+                                    }
+                                    disabled={loading}
+                                >
+                                    {suggestion.label}
+                                </button>
+
+                            )
+                        )}
+
+                    </Box>
+
+                    {/* INPUT */}
+
+                    {Input}
+
+                </Box>
 
             </Box>
 
