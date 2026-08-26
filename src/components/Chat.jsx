@@ -370,6 +370,38 @@ function Chat({
                                     portfolio de Jorge.
                                 </Typography>
 
+                                <Box className="suggestions-container">
+
+    <button
+        className="suggestion-button"
+        onClick={() => sendMessage("¿Quién es Jorge?")}
+    >
+        ¿Quién es Jorge?
+    </button>
+
+    <button
+        className="suggestion-button"
+        onClick={() => sendMessage("¿Cuál es la educación de Jorge?")}
+    >
+        Educación de Jorge
+    </button>
+
+    <button
+        className="suggestion-button"
+        onClick={() => sendMessage("¿Qué proyectos tiene Jorge?")}
+    >
+        Proyectos de Jorge
+    </button>
+
+    <button
+        className="suggestion-button"
+        onClick={() => sendMessage("¿Cuál es la experiencia de Jorge?")}
+    >
+        Experiencia de Jorge
+    </button>
+
+</Box>
+
                                 {Input}
 
                             </Box>
