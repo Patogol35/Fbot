@@ -292,8 +292,6 @@ function Chat({
     return (
         <Box className="chat-page">
 
-            {/* CHAT */}
-
             <Box className="chat-main">
 
                 {/* TOPBAR */}
@@ -400,9 +398,9 @@ function Chat({
 
                     {/* MENSAJES */}
 
-                    {messages.length > 0 && (
+                    <Box className="messages-container">
 
-                        <Box className="messages-container">
+                        {messages.length > 0 && (
 
                             <Box className="messages-list">
 
@@ -426,12 +424,10 @@ function Chat({
                                             <Box className="message-content">
 
                                                 <Typography className="message-name">
-
                                                     {msg.role ===
                                                     "user"
                                                         ? "Tú"
                                                         : "Sasha"}
-
                                                 </Typography>
 
                                                 <Paper
@@ -493,9 +489,9 @@ function Chat({
 
                             </Box>
 
-                        </Box>
+                        )}
 
-                    )}
+                    </Box>
 
                     {/* SUGERENCIAS */}
 
@@ -534,4 +530,4 @@ function Chat({
     );
 }
 
-export default Chat;
+export default Chat; 
