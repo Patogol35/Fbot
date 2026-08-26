@@ -63,7 +63,7 @@ function Chat({
             message: "¿Qué proyectos tiene Jorge?",
         },
         {
-            label: "Experiencia de Jorge",
+            label: "Certificados de Jorge",
             message: "¿Cuál es la experiencia de Jorge?",
         },
     ];
