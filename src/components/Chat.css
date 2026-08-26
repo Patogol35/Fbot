@@ -404,4 +404,105 @@
     .message-content {
         max-width: 90%;
     }
+    /* =========================================================
+   SUGERENCIAS
+========================================================= */
+
+.suggestions-container {
+    width: min(820px, 100%);
+    margin: 0 auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+    padding: 10px 20px;
+
+    flex-shrink: 0;
+}
+
+.suggestion-button {
+    border: 1px solid var(--mui-palette-divider);
+
+    background: var(--mui-palette-background-paper);
+
+    color: var(--mui-palette-text-primary);
+
+    padding: 10px 16px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.2;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.suggestion-button:hover {
+    transform: translateY(-2px);
+    border-color: #2563eb;
+}
+
+.suggestion-button:active {
+    transform: translateY(0);
+}
+
+.suggestion-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+    .suggestions-container {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .suggestion-button {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+}
+
+/* MOBILE PEQUEÑO */
+
+@media (max-width: 500px) {
+
+    .suggestions-container {
+        gap: 7px;
+        padding: 8px 6px;
+    }
+
+    .suggestion-button {
+        padding: 8px 11px;
+        font-size: 12px;
+    }
+}
+
+/* PANTALLA HORIZONTAL */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+    .suggestions-container {
+        gap: 5px;
+        padding: 6px 8px;
+    }
+
+    .suggestion-button {
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+}
     }
