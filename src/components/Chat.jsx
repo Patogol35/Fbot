@@ -292,6 +292,8 @@ function Chat({
     return (
         <Box className="chat-page">
 
+            {/* CHAT */}
+
             <Box className="chat-main">
 
                 {/* TOPBAR */}
@@ -361,7 +363,7 @@ function Chat({
 
                 </Box>
 
-                {/* CONTENIDO ÚNICO */}
+                {/* CONTENIDO */}
 
                 <Box className="chat-content">
 
@@ -495,7 +497,7 @@ function Chat({
 
                     )}
 
-                    {/* SUGERENCIAS SIEMPRE VISIBLES */}
+                    {/* SUGERENCIAS */}
 
                     <Box className="suggestions-container">
 
