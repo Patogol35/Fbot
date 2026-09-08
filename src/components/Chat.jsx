@@ -56,20 +56,20 @@ function Chat({
         },
         {
             label: "Educación de Jorge",
-            message: "¿Cuál es la educación de Jorge?",
+            message: "Cuál es la educación de Jorge",
         },
         {
             label: "Proyectos de Jorge",
-            message: "¿Qué proyectos tiene Jorge?",
+            message: "Qué proyectos tiene Jorge",
         },
         {
     label: "Certificados de Jorge",
-    message: "¿Qué certificaciones tiene Jorge?",
+    message: "Qué certificaciones tiene Jorge",
 },
 
         {
     label: "Tecnologías de Jorge",
-    message: "¿ Qué tecnologías utiliza Jorge ?",
+    message: "Qué tecnologías utiliza Jorge",
 },
     ];
 
