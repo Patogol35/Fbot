@@ -51,8 +51,8 @@ function Chat({
 
     const suggestions = [
         {
-            label: "¿ Quién es Jorge ?",
-            message: "¿ Quién es Jorge ?",
+            label: "Quién es Jorge",
+            message: "Quién es Jorge",
         },
         {
             label: "Educación de Jorge",
