@@ -71,6 +71,10 @@ function Chat({
     label: "Tecnologías de Jorge",
     message: "Qué tecnologías utiliza Jorge",
 },
+        {
+    label: "Contacto de Jorge",
+    message: "Como contactar a Jorge",
+},
     ];
 
     /*
